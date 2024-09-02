@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Random;
 
 public class TabuleiroTest {
@@ -17,6 +18,7 @@ public class TabuleiroTest {
     @BeforeEach
     void inicializaTabuleiro()
     {
+        // 480 campos, 240 minas
         Random rand = new Random();
         linhas = rand.nextInt(16);
         colunas = rand.nextInt(30);
@@ -56,6 +58,21 @@ public class TabuleiroTest {
     void testeGerarCampos()
     {
         Assertions.assertEquals(linhas*colunas, tabuleiro.getCampos().size());
+    }
+
+    @Test
+    void testeSortearMinas()
+    {
+        List<Campo> camposTabuleiro = tabuleiro.getCampos();
+        long minasArmadas = camposTabuleiro.stream()
+                .filter(Campo::isMinado)
+                .count();
+        Assertions.assertEquals(tabuleiro.getQtdMinas(), minasArmadas);
+    }
+    @Test
+    void testeObjetivoNaoAlcançado()
+    {
+        Assertions.assertFalse(tabuleiro.objetivoAlcancado());
     }
 
 }

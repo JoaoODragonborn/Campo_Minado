@@ -92,6 +92,12 @@ public class Campo
             marcado = !marcado;
     }
 
+    boolean objetivoAlcancado()
+    {
+        return (isMinado() && isMarcado()) || (isAberto() && !isMinado());
+    }
+
+
     void setVizinhanca(List<Campo> vizinhanca)
     {
         this.vizinhanca = vizinhanca;
@@ -105,6 +111,11 @@ public class Campo
     boolean isMarcado()
     {
         return marcado;
+    }
+
+    boolean isMinado()
+    {
+        return minado;
     }
 
     boolean isAberto()

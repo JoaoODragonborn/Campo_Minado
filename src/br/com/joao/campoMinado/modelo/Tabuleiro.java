@@ -26,6 +26,16 @@ public class Tabuleiro {
     }
 
     private void sortearMinas() {
+        long minasArmadas;
+        do{
+
+            int random = (int) (Math.random() * campos.size());
+            campos.get(random).setMina();
+            minasArmadas = campos.stream()
+                    .filter(Campo::isMinado)
+                    .count();
+        }
+        while(minasArmadas < qtdMinas);
     }
 
     private void associarVizinhos()
@@ -34,6 +44,47 @@ public class Tabuleiro {
             for (Campo v: campos) {
                 c.adicionarVizinho(v);
             }
+    }
+
+    public void gerarCampos()
+    {
+        for(int i = 0; i < qtdLinhas; i++)
+            for (int j = 0; j < qtdColunas; j++)
+            {
+                campos.add(new Campo(i, j));
+            }
+    }
+
+    public boolean objetivoAlcancado()
+    {
+        return campos.stream().allMatch(Campo::objetivoAlcancado);
+    }
+
+    void reiniciar()
+    {
+        campos.forEach(Campo::reiniciar);
+        sortearMinas();
+    }
+
+    public int getQtdLinhas() {
+        return qtdLinhas;
+    }
+
+    public int getQtdColunas() {
+        return qtdColunas;
+    }
+
+    public int getQtdMinas() {
+        return qtdMinas;
+    }
+
+    public List<Campo> getCampos() {
+        return campos;
+    }
+
+    public String toString()
+    {
+        return "";
     }
     // Faz o mesmo que o algoritmo acima, mas com complexidade O(n)
     // A leitura e compreensão são horríveis, mas a complexidade é menor!
@@ -111,32 +162,6 @@ public class Tabuleiro {
         campos.get(i).adicionarVizinho(campos.get(i - qtdColunas));
         campos.get(i).adicionarVizinho(campos.get(i - 1));
     }
-
-    public void gerarCampos()
-    {
-        for(int i = 0; i < qtdLinhas; i++)
-            for (int j = 0; j < qtdColunas; j++)
-            {
-                campos.add(new Campo(i, j));
-            }
-    }
-
-    public int getQtdLinhas() {
-        return qtdLinhas;
-    }
-
-    public int getQtdColunas() {
-        return qtdColunas;
-    }
-
-    public int getQtdMinas() {
-        return qtdMinas;
-    }
-
-    public List<Campo> getCampos() {
-        return campos;
-    }
-
 
 
 }
