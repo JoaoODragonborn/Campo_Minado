@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 public class Tabuleiro {
 
-    private int qtdLinhas;
-    private int qtdColunas;
-    private int qtdMinas;
+    private final int qtdLinhas;
+    private final int qtdColunas;
+    private final int qtdMinas;
 
     private final List<Campo> campos = new ArrayList<>();
 
@@ -23,6 +23,22 @@ public class Tabuleiro {
         associarVizinhos();
         sortearMinas();
 
+    }
+
+    public void abrirCampo(int linha, int coluna)
+    {
+        campos.parallelStream()
+                .filter(c -> c.getLinha() == linha && c.getColuna() == coluna)
+                .findFirst()
+                .ifPresent(Campo::abrir);
+    }
+
+    public void alterarMarcacaoCampo(int linha, int coluna)
+    {
+        campos.parallelStream()
+                .filter(c -> c.getLinha() == linha && c.getColuna() == coluna)
+                .findFirst()
+                .ifPresent(Campo::alternarMarcacao);
     }
 
     private void sortearMinas() {
@@ -60,7 +76,7 @@ public class Tabuleiro {
         return campos.stream().allMatch(Campo::objetivoAlcancado);
     }
 
-    void reiniciar()
+    public void reiniciar()
     {
         campos.forEach(Campo::reiniciar);
         sortearMinas();
@@ -84,7 +100,19 @@ public class Tabuleiro {
 
     public String toString()
     {
-        return "";
+        StringBuilder sb = new StringBuilder();
+        int campo = 0;
+        for(int linha = 0; linha < qtdLinhas; linha++)
+        {
+            for(int coluna = 0; coluna < qtdColunas; coluna++)
+            {
+                sb.append(" ");
+                sb.append(campos.get(campo++));
+                sb.append(" ");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
     }
     // Faz o mesmo que o algoritmo acima, mas com complexidade O(n)
     // A leitura e compreensão são horríveis, mas a complexidade é menor!
