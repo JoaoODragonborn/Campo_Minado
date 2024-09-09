@@ -1,5 +1,7 @@
 package br.com.joao.campoMinado.modelo;
 
+import br.com.joao.campoMinado.excecao.ExplosaoException;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -27,10 +29,17 @@ public class Tabuleiro {
 
     public void abrirCampo(int linha, int coluna)
     {
-        campos.parallelStream()
-                .filter(c -> c.getLinha() == linha && c.getColuna() == coluna)
-                .findFirst()
-                .ifPresent(Campo::abrir);
+        try {
+            campos.parallelStream()
+                    .filter(c -> c.getLinha() == linha && c.getColuna() == coluna)
+                    .findFirst()
+                    .ifPresent(Campo::abrir);
+        }
+        catch(ExplosaoException e)
+        {
+            campos.forEach(Campo::setAberto);
+            throw e;
+        }
     }
 
     public void alterarMarcacaoCampo(int linha, int coluna)

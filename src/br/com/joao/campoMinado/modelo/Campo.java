@@ -103,6 +103,11 @@ public class Campo
         this.vizinhanca = vizinhanca;
     }
 
+    void setAberto()
+    {
+        this.aberto = true;
+    }
+
     void setMina()
     {
         this.minado = true;

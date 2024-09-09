@@ -6,6 +6,7 @@ import br.com.joao.campoMinado.modelo.Tabuleiro;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class TabuleiroConsole {
@@ -26,10 +27,13 @@ public class TabuleiroConsole {
             while(continuar)
             {
                 cicloDojogo();
-                System.out.println("Deseja jogar mais uma Partida?(S/n)");
+                System.out.println("Deseja jogar uma nova Partida?(S/n)");
                 String resposta = entrada.nextLine().trim();
                 if("n".equalsIgnoreCase(resposta))
+                {
                     continuar = false;
+                    System.out.println("Até mais!");
+                }
                 else
                     tabuleiro.reiniciar();
             }
@@ -71,6 +75,12 @@ public class TabuleiroConsole {
         catch(ExplosaoException e)
         {
             System.out.println("Você perdeu!");
+            System.out.println(tabuleiro);
+        }
+        catch (NoSuchElementException e)
+        {
+            System.out.println("Você não digitou as coordenadas corretamente!");
+            System.out.println("Partida encerrada");
         }
     }
 
